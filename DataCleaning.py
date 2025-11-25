@@ -92,7 +92,7 @@ df = df[df["AIRLINE_NAME"].isin(commercial_airlines)].copy()
 print("Rows after Airlines Filter:", len(df))
 
 #remove weather delays
-df = df[df["WEATHER_DELAY"] >= 0]
+df = df[df["WEATHER_DELAY"] <= 0]
 print("Rows after weather delays filter:", len(df))
 
 #punctuality metrics
@@ -104,5 +104,6 @@ output_path = r"C:\Users\laura\OneDrive\Desktop\ORCA Project\BTS_2024_NYCflights
 df.to_csv(output_path, index=False)
 
 print("\nSaved cleaned file to:", output_path)
+
 
 
