@@ -18,10 +18,18 @@ nyc_airports = ["JFK", "LGA", "EWR"]
 df = df[df["ORIGIN"].isin(nyc_airports)].copy()
 print("Rows after NYC origin filter:", len(df))
 
+#filter origin airports for only NYC airports
+dest_airports = ["ORD", "MIA", "BWI", "SFO", "SEA", "LAX", "DFW", 
+                "DEN", "CLT", "BOS", "HOU", "ATL", "PHX", "LAS",
+                "MCO", "MSP", "FLL", "DTW", "PHL", "BWI", "SLC"]
+df = df[df["DEST"].isin(dest_airports)].copy()
+print("Rows after destination filter:", len(df))
+
 output_path = r"C:\Users\laura\OneDrive\Desktop\ORCA Project\BTS_2024_NYCflights_cleaned.csv"
 df.to_csv(output_path, index=False)
 
 print("\nSaved cleaned file to:", output_path)
+
 
 
 
