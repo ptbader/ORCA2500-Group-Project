@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
+from scipy import stats
 
 df = pd.read_csv("FinalSustainabilityDataset.csv")
 IATA_FACTOR = 3.16  # kg CO₂ per kg fuel
@@ -14,8 +14,39 @@ df = df.dropna(subset=["CO2_per_pax", "ARR_DELAY"])
 #linreg 
 x = df["CO2_per_pax"]
 y = df["ARR_DELAY"]
-m, b = np.polyfit(x, y, 1)
-y_pred = m * x + b
+
+#regression statistics
+reg = stats.linregress(x, y)
+
+slope = reg.slope
+intercept = reg.intercept
+r_value = reg.rvalue
+p_value = reg.pvalue
+std_err = reg.stderr
+
+r_squared = r_value**2    # R² value
+ #95% confidence interval setup
+alpha = 0.05
+df_n = len(x) - 2
+t_crit = stats.t.ppf(1 - alpha/2, df_n)
+slope_ci_lower = slope - t_crit * std_err
+slope_ci_upper = slope + t_crit * std_err
+intercept_stderr = reg.intercept_stderr
+intercept_ci_lower = intercept - t_crit * intercept_stderr
+intercept_ci_upper = intercept + t_crit * intercept_stderr
+
+print("----- Regression Statistics -----")
+print(f"Slope: {slope}")
+print(f"Intercept: {intercept}")
+print(f"R²: {r_squared}")
+print(f"P-value (slope significance): {p_value}")
+print(f"95% CI for slope: [{slope_ci_lower}, {slope_ci_upper}]")
+print(f"95% CI for intercept: [{intercept_ci_lower}, {intercept_ci_upper}]")
+print("----------------------------------")
+# ---------------------------------------------
+
+# regression line for plot
+y_pred = slope * x + intercept
 
 plt.figure(figsize=(8, 6))
 plt.scatter(x, y, alpha=0.4, label="Flights")
